@@ -56,6 +56,7 @@ const myQuestions = [
 
 const quizContainer = document.getElementById('quiz-container');
 const startButton = document.getElementById('start');
+quizContainer.style.display = 'none';
 let currentQuestion = 0;
 let timeLeft = 300;
 let timerInterval;
@@ -85,8 +86,44 @@ function startTimer() {
   }, 1000);
 }
 
+//Function to save the scores
+function endQuiz() {
+    
+}
+
 // Function to display a question
 function displayQuestion() {
+    const question = myQuestions[currentQuestion];
+    const questionEl = document.createElement('h2');
+    questionEl.textContent = question.question;
+    quizContainer.appendChild(questionEl);
+
+    const choicesContainer = document.createElement('div');
+    choicesContainer.classList.add('choices-container');
+    quizContainer.appendChild(choicesContainer);
+    
+    for (let i = 0; i < question.choices.length; i++) {
+        const choiceButton = document.createElement('button');
+        choiceButton.classList.add('choice');
+        choiceButton.textContent = question.choices[i];
+        choicesContainer.appendChild(choiceButton);
+
+        choiceButton.addEventListener("click", function(event) {
+            checkAnswer(event);
+          });
+        }
+    }
+      
+function checkAnswer(event) {
+    const question = myQuestions[currentQuestion];
+    const clickedButton = event.target;
+    const clickedIndex = Array.from(choicesContainer.children).indexOf(clickedButton);
+    if (clickedIndex === question.correctAnswer) {
+          console.log('Correct!');
+        } else {
+          console.log('Incorrect!');
+        }
+    }
   
-}
+
 startButton.addEventListener("click", startQuiz)
